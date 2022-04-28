@@ -6,5 +6,12 @@
     <string name="back4app_app_id">xheqGN8huE0tq9D0KcfdENtbM1jSbi0C6DwGVWRb</string>
     <string name="back4app_client_key">qVPbbBEBRdrMthZEIOzr2bF47GVmrQrpECqWtwvr</string>
 
+    <string name="nutritionix_search">https://trackapi.nutritionix.com/v2/search/instant</string>
+    <string name="nutritionix_nutrition">https://trackapi.nutritionix.com/v2/natural/nutrients</string>
+    <string name="nutritionix_app_id">66a8a7c1</string>
+    <string name="nutritionix_client_key">5e49057e38e68354e0682b60318d9780</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>
