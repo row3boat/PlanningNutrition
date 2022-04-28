@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PlanningNutrition</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+
+    <!-- Paste BOTH strings as required -->
+    <string name="back4app_app_id">xheqGN8huE0tq9D0KcfdENtbM1jSbi0C6DwGVWRb</string>
+    <string name="back4app_client_key">qVPbbBEBRdrMthZEIOzr2bF47GVmrQrpECqWtwvr</string>
+
+
 </resources>
