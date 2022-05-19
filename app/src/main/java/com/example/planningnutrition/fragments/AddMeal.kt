@@ -1,34 +1,36 @@
 package com.example.planningnutrition.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.example.planningnutrition.Meal
+import com.example.planningnutrition.MealAdapter
 import com.example.planningnutrition.R
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.UnsupportedEncodingException
+import java.nio.charset.StandardCharsets
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AddMeal.newInstance] factory method to
- * create an instance of this fragment.
- */
-class AddMeal : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+open class AddMeal : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var mealsRecyclerView: RecyclerView
+    lateinit var adapter: MealAdapter
+    var allMeals:MutableList<Meal> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,23 +40,97 @@ class AddMeal : Fragment() {
         return inflater.inflate(R.layout.fragment_add_meal, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddMeal.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddMeal().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        super.onViewCreated(view, savedInstanceState)
+
+        mealsRecyclerView = view.findViewById(R.id.rvAddMeals)
+
+        adapter = MealAdapter(requireContext(),allMeals)
+
+        mealsRecyclerView.adapter = adapter
+
+        mealsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        view.findViewById<Button>(R.id.buttonSearchButton).setOnClickListener{
+            queryMeal(view.findViewById<EditText>(R.id.etSearch).text.toString())
+        }
+
+        view.findViewById<Button>(R.id.buttonCustomMeal).setOnClickListener(){
+
+            val newFragment = CustomMeal()
+            val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
+            transaction.replace(R.id.flContainer,newFragment)
+            transaction.commit()
+        }
+
+    }
+
+    open fun queryMeal(name : String) {
+
+        Log.i(TAG, "button clicked, method launched")
+
+        val queue = Volley.newRequestQueue(requireContext())
+
+        val params = JSONObject()
+        params.put("query",name)
+
+        val url = "https://trackapi.nutritionix.com/v2/search/instant?query=$name"
+        Log.i(TAG,url + params.toString())
+
+        val textView = view?.findViewById<TextView>(R.id.tvTest)
+// ...
+        val volleyEnrollRequest =
+            object : JsonObjectRequest(Request.Method.GET, url,
+                null,
+                Response.Listener { response ->
+
+                    val newMeal = ArrayList<Meal>(20)
+                    val jsonArray = response.getJSONArray("common")
+                    Log.i(TAG,jsonArray.toString())
+                    for (i in 0 until 20){
+                        val mealToAdd =  Meal()
+                        val foodName = jsonArray.getJSONObject(i).getString("food_name")
+                        mealToAdd.setName(foodName)
+                        val foodImage = jsonArray.getJSONObject(i).getString("photo")
+                        newMeal.add(mealToAdd)
+                    }
+                },
+
+                Response.ErrorListener { e->
+                    try {
+                        val responseBody = String(e.networkResponse.data,StandardCharsets.UTF_8)
+                        val data = JSONObject(responseBody)
+                        val errors = data.getJSONArray("errors")
+                        val jsonMessage = errors.getJSONObject(0)
+                        val message = jsonMessage.getString("message")
+                        Log.e(TAG, message)
+                    } catch (e: JSONException) {
+                        Log.e(TAG,e.toString())
+                    } catch (errorr: UnsupportedEncodingException) {
+                        Log.e(TAG,e.toString())
+                    }
+                }
+            ) {
+                // Providing Request Headers
+                override fun getHeaders(): Map<String, String> {
+                    // Create HashMap of your Headers as the example provided below
+
+                    val headers = HashMap<String, String>()
+                    headers.put("Content-Type","application/json")
+                    headers.put("x-app-id","66a8a7c1")
+                    headers.put("x-app-key","5e49057e38e68354e0682b60318d9780")
+
+                    Log.i(TAG,headers.toString())
+                    return headers
                 }
             }
+        queue.add(volleyEnrollRequest)
     }
+
+
+    companion object {
+        const val TAG = "AddMeal Fragment"
+    }
+
 }

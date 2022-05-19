@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
 import com.example.planningnutrition.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,6 +40,18 @@ class Statistics : Fragment() {
         return inflater.inflate(R.layout.fragment_statistics, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<Button>(R.id.weightButton).setOnClickListener{
+            Toast.makeText(requireContext(), "Weight button clicked", Toast.LENGTH_SHORT).show();
+        }
+        view.findViewById<Button>(R.id.heightButton).setOnClickListener{
+            Toast.makeText(requireContext(), "Height button clicked", Toast.LENGTH_SHORT).show();
+        }
+        view.findViewById<Button>(R.id.calorieButton).setOnClickListener{
+            Toast.makeText(requireContext(), "Calorie button clicked", Toast.LENGTH_SHORT).show();
+        }
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -56,5 +70,6 @@ class Statistics : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+
     }
 }

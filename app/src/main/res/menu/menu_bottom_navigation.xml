@@ -10,11 +10,7 @@
     <item
         android:id="@+id/action_addMeal"
         android:icon="@android:drawable/ic_input_add"
-        android:title="AddMeal"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_meals"
-        android:title="Meals"
+        android:title="Add Meal"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_stats"

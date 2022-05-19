@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.planningnutrition.fragments.AddMeal
 import com.example.planningnutrition.fragments.Home
-import com.example.planningnutrition.fragments.Meals
 import com.example.planningnutrition.fragments.Statistics
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -49,9 +48,6 @@ class MainActivity : AppCompatActivity() {
                     fragmentToShow = Home()
                 }
 
-                R.id.action_meals -> {
-                    fragmentToShow = Meals()
-                }
 
                 R.id.action_stats -> {
                     fragmentToShow = Statistics()
