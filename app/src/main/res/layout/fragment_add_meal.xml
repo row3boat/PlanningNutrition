@@ -19,15 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvTest"
-        android:text="test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/buttonSearchButton"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
 
     <Button
         android:id="@+id/buttonSearchButton"
@@ -56,7 +47,7 @@
         app:layout_constraintBottom_toTopOf="@id/buttonCustomMeal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTest" />
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

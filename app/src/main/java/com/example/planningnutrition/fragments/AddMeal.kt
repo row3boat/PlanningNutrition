@@ -1,5 +1,6 @@
 package com.example.planningnutrition.fragments
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,11 +17,14 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.planningnutrition.AddMealAdapter
 import com.example.planningnutrition.Meal
 import com.example.planningnutrition.MealAdapter
 import com.example.planningnutrition.R
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.UnsupportedEncodingException
 import java.nio.charset.StandardCharsets
 
@@ -29,8 +32,10 @@ import java.nio.charset.StandardCharsets
 open class AddMeal : Fragment() {
 
     lateinit var mealsRecyclerView: RecyclerView
-    lateinit var adapter: MealAdapter
+    lateinit var adapter: AddMealAdapter
     var allMeals:MutableList<Meal> = mutableListOf()
+    var photoFile: File? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,13 +45,14 @@ open class AddMeal : Fragment() {
         return inflater.inflate(R.layout.fragment_add_meal, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
 
         mealsRecyclerView = view.findViewById(R.id.rvAddMeals)
 
-        adapter = MealAdapter(requireContext(),allMeals)
+        adapter = AddMealAdapter(requireContext(),allMeals)
 
         mealsRecyclerView.adapter = adapter
 
@@ -68,6 +74,8 @@ open class AddMeal : Fragment() {
 
     open fun queryMeal(name : String) {
 
+        allMeals.clear()
+
         Log.i(TAG, "button clicked, method launched")
 
         val queue = Volley.newRequestQueue(requireContext())
@@ -78,22 +86,33 @@ open class AddMeal : Fragment() {
         val url = "https://trackapi.nutritionix.com/v2/search/instant?query=$name"
         Log.i(TAG,url + params.toString())
 
-        val textView = view?.findViewById<TextView>(R.id.tvTest)
 // ...
         val volleyEnrollRequest =
             object : JsonObjectRequest(Request.Method.GET, url,
                 null,
                 Response.Listener { response ->
 
-                    val newMeal = ArrayList<Meal>(20)
-                    val jsonArray = response.getJSONArray("common")
+                    val jsonArray = response.getJSONArray("branded")
                     Log.i(TAG,jsonArray.toString())
+                    val mealList  = ArrayList<Meal>()
                     for (i in 0 until 20){
                         val mealToAdd =  Meal()
+
                         val foodName = jsonArray.getJSONObject(i).getString("food_name")
+                        val calories = jsonArray.getJSONObject(i).getString("nf_calories")
+                        val stringUrl = (jsonArray.getJSONObject(i).getJSONObject("photo").getString("thumb").replace("\\",""))
+
+                        mealToAdd.setImageURL(stringUrl)
                         mealToAdd.setName(foodName)
-                        val foodImage = jsonArray.getJSONObject(i).getString("photo")
-                        newMeal.add(mealToAdd)
+                        mealToAdd.setCalories(calories)
+
+                        //val foodImage = ParseFile((jsonArray.getJSONObject(i).getString("photo")))
+                        mealList.add(mealToAdd)
+                        adapter.notifyDataSetChanged()
+                    }
+                    allMeals.addAll(mealList)
+                    for (meal in allMeals){
+                        Log.i(TAG, meal.getImageUrl().toString())
                     }
                 },
 
@@ -132,5 +151,7 @@ open class AddMeal : Fragment() {
     companion object {
         const val TAG = "AddMeal Fragment"
     }
+
+
 
 }

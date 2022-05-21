@@ -57,7 +57,7 @@ open class Home : Fragment() {
                 }else{
                     if (meals!= null){
                         for (meal in meals) {
-                            Log.i(TAG, "Meal: " + meal.getName() + "; calories: " + meal.getCalories())
+                            Log.i(TAG, "Meal: " + meal.getName() + "; calories: " + meal.getCalories() + meal.getImage())
                         }
                         allMeals.addAll(meals)
                         adapter.notifyDataSetChanged()
