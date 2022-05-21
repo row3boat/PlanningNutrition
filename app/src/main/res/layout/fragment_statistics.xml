@@ -6,63 +6,103 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.Statistics">
 
-    <TextView
-        android:id="@+id/weighttv"
+
+
+    <EditText
+        android:id="@+id/etWeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Weight: "
-        android:textSize="30sp"
+        android:hint="Enter Weight (kg)"
+        android:textSize="20sp"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/heighttv"
+    <EditText
+        android:id="@+id/etHeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Height: "
-        android:textSize="30sp"
+        android:hint="Enter Height (cm)"
+        android:textSize="20sp"
         android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weighttv" />
+        app:layout_constraintTop_toBottomOf="@id/etWeight" />
 
-    <TextView
-        android:id="@+id/caloriegoal"
+    <EditText
+        android:id="@+id/etCalorieGoal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Calorie goal: "
+        android:hint="Enter Calorie Goal"
+        android:textSize="20dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etHeight" />
+
+
+
+    <TextView
+        android:id="@+id/contactUs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact us at planningnutrition@gmail.com for nutritional advice."
         android:textSize="30dp"
         android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/heighttv" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-
-    <Button
-        android:id="@+id/weightButton"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Edit"
+        app:layout_constraintBottom_toTopOf="@+id/contactUs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCalorieGoal"
+        app:srcCompat="@drawable/_3e68bab829c4e41b9245fa5e6ccf8b1" />
+
+    <Button
+        android:id="@+id/buttonEditPFP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile Image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/buttonSignOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/heightButton"
+        android:id="@+id/buttonChangeWeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:text="Edit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weightButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/etWeight"
+        app:layout_constraintStart_toEndOf="@+id/etWeight"
+        app:layout_constraintTop_toTopOf="@+id/etWeight" />
 
     <Button
-        android:id="@+id/calorieButton"
+        android:id="@+id/buttonChangeHeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:text="Edit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/heightButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/etHeight"
+        app:layout_constraintStart_toEndOf="@+id/etCalorieGoal"
+        app:layout_constraintTop_toTopOf="@+id/etHeight" />
+
+    <Button
+        android:id="@+id/buttonChangeCalorieGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        app:layout_constraintBottom_toBottomOf="@+id/etCalorieGoal"
+        app:layout_constraintStart_toEndOf="@+id/etHeight"
+        app:layout_constraintTop_toTopOf="@+id/etCalorieGoal" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

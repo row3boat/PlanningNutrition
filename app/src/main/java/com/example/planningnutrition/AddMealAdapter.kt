@@ -9,9 +9,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.GlideException
+import com.parse.ParseUser
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
@@ -39,7 +41,20 @@ class AddMealAdapter(val context: Context, val meals : MutableList<Meal>)
         holder.bind(meal)
 
         holder.itemView.findViewById<Button>(R.id.btnAddMeal).setOnClickListener(){
+            meal.setUser(ParseUser.getCurrentUser())
             Log.i(TAG, meal.getName().toString())
+            meal.saveInBackground(){ exception ->
+                if (exception != null) {
+                    Log.e(MainActivity.TAG, "Error while saving post")
+                    exception.printStackTrace()
+                } else {
+                    Log.i(MainActivity.TAG, "Successfully saved post")
+                    var curCalories = ParseUser.getCurrentUser().getNumber("dailyCalories")!!.toInt()
+                    curCalories += meal.getCalories()!!.toInt()
+
+                    ParseUser.getCurrentUser().put("dailyCalories", curCalories)
+                }
+            }
         }
     }
 

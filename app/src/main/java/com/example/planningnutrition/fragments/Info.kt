@@ -1,13 +1,17 @@
 package com.example.planningnutrition.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import com.example.planningnutrition.LoginActivity
 import com.example.planningnutrition.R
+import com.parse.ParseUser
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,16 +45,17 @@ class Statistics : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        view.findViewById<Button>(R.id.weightButton).setOnClickListener{
-            Toast.makeText(requireContext(), "Weight button clicked", Toast.LENGTH_SHORT).show();
+//        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<Button>(R.id.buttonSignOut).setOnClickListener{
+            ParseUser.logOut()
+            val intent = Intent(activity, LoginActivity::class.java)
+            getActivity()?.startActivity(intent)
         }
-        view.findViewById<Button>(R.id.heightButton).setOnClickListener{
-            Toast.makeText(requireContext(), "Height button clicked", Toast.LENGTH_SHORT).show();
+
+        view.findViewById<Button>(R.id.buttonChangeCalorieGoal).setOnClickListener{
+            ParseUser.getCurrentUser().put("calorieGoal", view.findViewById<EditText>(R.id.etCalorieGoal).text.toString().toInt())
         }
-        view.findViewById<Button>(R.id.calorieButton).setOnClickListener{
-            Toast.makeText(requireContext(), "Calorie button clicked", Toast.LENGTH_SHORT).show();
-        }
+
     }
     companion object {
         /**

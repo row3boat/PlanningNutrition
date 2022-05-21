@@ -24,7 +24,7 @@ import com.parse.*
 import java.io.File
 
 
-//TODO: make this shit work lmfao it crashes when u open the camera oops
+//TODO: make this work  it crashes when u open the camera oops
 
 open class CustomMeal : Fragment() {
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
@@ -81,38 +81,17 @@ open class CustomMeal : Fragment() {
                 Toast.makeText(requireContext(), "Error saving post", Toast.LENGTH_SHORT).show()
             } else {
                 Log.i(MainActivity.TAG, "Successfully saved post")
+                var curCalories = ParseUser.getCurrentUser().getNumber("dailyCalories")?.toInt()
+                curCalories = curCalories?.plus(meal.getCalories()!!.toInt())
+                if (curCalories != null) {
+                    ParseUser.getCurrentUser().put("dailyCalories", curCalories)
+                }
             }
         }
     }
 
     fun onLaunchCamera() {
-        // create Intent to take a picture and return control to the calling application
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        // Create a File reference for future access
-        photoFile = getPhotoFileUri(photoFileName)
-
-        // wrap File object into a content provider
-        // required for API >= 24
-        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        if (photoFile != null) {
-            val fileProvider: Uri =
-                FileProvider.getUriForFile(
-                    requireContext(),
-                    "com.codepath.fileprovider",
-                    photoFile!!
-                )
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
-
-            // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-            // So as long as the result is not null, it's safe to use the intent.
-
-            // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-            // So as long as the result is not null, it's safe to use the intent.
-            if (intent.resolveActivity(requireContext().packageManager) != null) {
-                // Start the image capture intent to take photo
-                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
-            }
-        }
+        //TODO
     }
 
     fun getPhotoFileUri(fileName: String): File {

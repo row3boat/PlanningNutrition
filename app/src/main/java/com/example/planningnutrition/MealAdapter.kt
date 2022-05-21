@@ -60,7 +60,7 @@ class MealAdapter(val context: Context, val meals : MutableList<Meal>)
             }
             else {
                 Log.i(TAG, meal.getImageUrl().toString())
-                Glide.with(itemView.context).load(meal.getImageUrl()).into(ivImage)
+                Glide.with(itemView.context).load(meal.getImageUrl()).error(R.drawable._3e68bab829c4e41b9245fa5e6ccf8b1).into(ivImage)
 
             }
         }

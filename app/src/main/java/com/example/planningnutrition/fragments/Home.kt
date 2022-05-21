@@ -1,5 +1,6 @@
 package com.example.planningnutrition.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planningnutrition.Meal
@@ -43,6 +45,17 @@ open class Home : Fragment() {
 
         queryMeals()
 
+        var dailyCalories  = ParseUser.getCurrentUser().getNumber("dailyCalories")
+        var calorieGoal = ParseUser.getCurrentUser().getNumber("calorieGoal")
+
+        view.findViewById<TextView>(R.id.tvDailyConsumedCalories).setText("${dailyCalories} calories consumed out of ${calorieGoal}")
+        if (dailyCalories!!.toInt() > calorieGoal!!.toInt()){
+            view.findViewById<TextView>(R.id.tvDailyConsumedCalories).setTextColor(Color.RED)
+        }
+        else{
+            view.findViewById<TextView>(R.id.tvDailyConsumedCalories).setTextColor(Color.GRAY)
+        }
+
     }
 
     open fun queryMeals() {
@@ -66,6 +79,8 @@ open class Home : Fragment() {
             }
 
         })
+
+
     }
 
     companion object {
